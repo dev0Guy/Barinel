@@ -49,7 +49,7 @@ def _remove_superset(diag: list[set]):
         if _is_superset(set(val), diag[:idx]+ diag[idx+1:]):
             diag.remove(val);
 
-def staccato(A: np.ndarray, e: np.array, components: list[int]=None,comp_n:int=None, lam: float = 0.8, l: int=25):
+def staccato(A: np.ndarray, e: np.array, components: list[int]=None,comp_n:int=None, lam: float = .4, l: int=20):
     """
         @Todo:  Implement
     """

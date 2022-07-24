@@ -17,7 +17,6 @@ def probability_function(A: np.ndarray, e: np.array, D: list[set], P: float):
     probabilities: list = []
     for diagnosis in D:
         guess: np.array = np.ones(len(diagnosis)) * P;
-        print(diagnosis)
         partial_A: np.ndarray = A[:, diagnosis];
         rows_inclusion: np.array = np.where(np.sum(partial_A, axis=1) != 0)[0];
         partial_A = partial_A[rows_inclusion, :];
@@ -36,7 +35,6 @@ def barniel(A: np.ndarray, e: np.array, D: list[set], P: float=0.05):
     mul = probabilities * obs_prob;
     # normalize
     probabilities = mul / np.sum(mul);
-    print([np.sum(A[:,idx]) for idx in D]);
     return sorted(
         list(zip(D,probabilities)),
         key= lambda item: item[1],
