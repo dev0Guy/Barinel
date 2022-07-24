@@ -1,5 +1,7 @@
+from email.generator import Generator
 import numpy as np;
 import json;
+import csv;
 
 def build_matrix(path: str) -> tuple[np.ndarray, np.array,]:
     with open(path) as file:
@@ -49,3 +51,11 @@ def wasted_effort(predictions: list[set,float], label: set):
         if not need_to_fix:
             break;
     return len(wasted);
+
+def write_to_csv(path: str, header: list[str], generator: Generator):
+    assert 'csv' in path;
+    with open(path,'w',encoding='utf-8') as file:
+        writer = csv.writer(file);
+        writer.writerow(header);
+        for line in generator:
+            writer.writerow(line);

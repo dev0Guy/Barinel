@@ -1,6 +1,7 @@
-from src import barinel;
 from  minihit import minihit;
+from src import barinel;
 import utils;
+import time;
 
 PATHS = [
     '2172_ea4a3f8a',
@@ -26,14 +27,30 @@ PATHS = [
 ];
 
 
-for matrix_path in PATHS:
-    # load matrix from file 
-    A, e, label, conflict = utils.build_matrix(f'matrices/{matrix_path}');
-    rc_tree = minihit.RcTree(conflict)
-    rc_tree.solve(prune=True, sort=False);
-    D = list(map(lambda x: tuple(x),rc_tree.generate_minimal_hitting_sets()));
-    output = barinel.barniel(A, e, D);
-    precision = utils.weighted_precision(output, set(label));
-    recall = utils.weighted_recall(output, set(label));
-    wasted = utils.wasted_effort(output, set(label));
-    print('Precision: {} , Recall: {}, Wasted: {}'.format(precision, recall,wasted));
+def diagnosis_Generator():
+    for matrix_n, matrix_path in enumerate(PATHS):
+        # load matrix from file 
+        A, e, label, conflict = utils.build_matrix(f'matrices/{matrix_path}');
+        rc_tree = minihit.RcTree(conflict)
+        start_time: float = time.time();
+        rc_tree.solve(prune=True, sort=False);
+        D = list(map(lambda x: tuple(x),rc_tree.generate_minimal_hitting_sets()));
+        output = barinel.barniel(A, e, D);
+        runtime = time.time() - start_time;
+        precision = utils.weighted_precision(output, set(label));
+        recall = utils.weighted_recall(output, set(label));
+        wasted = utils.wasted_effort(output, set(label));
+        yield matrix_n, A.shape[1], A.shape[0], len(output),precision, recall, wasted , runtime;
+
+if __name__ == '__main__':
+    header = [
+        'Martix no.',
+        '# Components',
+        '# Tests',
+        '# Diagnoses',
+        'Weighted Precision',
+        'Weighted Recall',
+        'Wasted Effort',
+        'Runtime(ms)',  
+    ];
+    utils.write_to_csv('solutions.csv',header,diagnosis_Generator());
