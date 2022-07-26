@@ -40,7 +40,7 @@ def diagnosis_Generator():
         precision = utils.weighted_precision(output, set(label));
         recall = utils.weighted_recall(output, set(label));
         wasted = utils.wasted_effort(output, set(label));
-        yield matrix_n, A.shape[1], A.shape[0], len(output),precision, recall, wasted , runtime;
+        yield matrix_n, A.shape[1], A.shape[0], len(output),precision, recall, wasted , runtime, output;
 
 if __name__ == '__main__':
     header = [
@@ -52,5 +52,6 @@ if __name__ == '__main__':
         'Weighted Recall',
         'Wasted Effort',
         'Runtime(ms)',  
+        'Diagnoses'
     ];
     utils.write_to_csv('solutions.csv',header,diagnosis_Generator());
