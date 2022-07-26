@@ -34,7 +34,7 @@ def probability_function(A: np.ndarray, e: np.array, D: list[set], P: float):
 def pass_although_broken(diagnosis: set, m: int, P: float):
     return np.power(P,len(diagnosis)) * np.power(1-P, m-len(diagnosis));
 
-def barniel(A: np.ndarray, e: np.array, D: list[set], P: float=0.05):
+def barniel(A: np.ndarray, e: np.array, D: list[set], P: float=0.01):
     m: int = A.shape[1];
     # probability function after optimization
     probabilities: np.array = probability_function(A, e, D, P);
